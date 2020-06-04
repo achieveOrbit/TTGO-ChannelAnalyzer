@@ -58,11 +58,11 @@ void setup() {
 
     Serial.println("Setup done");
 
-    // draw_channel(1, 3, 20);
-    // draw_channel(3, 6, 2);
-    // draw_channel(7, 3, 3);
-    // draw_channel(14, 2, 1);
-    // tft.drawLine(15, 0, 15, 240, TFT_WHITE);
+    draw_channel(1, 3, 20);
+    draw_channel(3, 6, 2);
+    draw_channel(7, 3, 3);
+    draw_channel(14, 2, 1);
+    tft.drawLine(15, 0, 15, 240, TFT_WHITE);
 }
 
 /*******************************************************************************
@@ -70,46 +70,46 @@ void setup() {
  ******************************************************************************/
 
 void loop() {
-    char s[12] = "";
-    int networks = WiFi.scanNetworks();
+    // char s[12] = "";
+    // int networks = WiFi.scanNetworks();
 
-    if (networks == 0) {
-        tft.fillScreen(TFT_BLACK);
-        tft.drawString("No networks found...", 0, 0);
-        Serial.println("No networks found...");
-    } else {
-        for (int i = 0; i < networks; ++i) {
-            int c = WiFi.channel(i);
-            channels[c].occupants += 1;
-            channels[c].total_strength += WiFi.RSSI(i);
-        }
-        for (int i = 0; i < sizeof(channels)/sizeof(channel_t); i++) {
-            tft.fillRect(0, i*8, 8, 200, TFT_BLACK); // Smazeme aktualni radek zejo
-            // Channel name
-            // snprintf(s, 12, "Channel %d", i+1);
-            // tft.drawString(s, 0, i*8);
-            tft.drawString(frequencies[i], 0, i*8);
-            // Channel occupants
-            snprintf(s, 12, "%d", channels[i].occupants);
-            tft.drawString((const char*)s, 95, i*8);
-            // Channel signal
-            if (channels[i].occupants == 0) snprintf(s, 12, "%d", 0);
-            else snprintf(s, 12, "%d", (channels[i].total_strength)/(channels[i].occupants));
-            tft.drawString(s, 115, i*8);
-        }
-    }
-    Serial.println("Waiting...");
-    delay(SCANNING_DELAY);
-    reset_channels();
+    // if (networks == 0) {
+    //     tft.fillScreen(TFT_BLACK);
+    //     tft.drawString("No networks found...", 0, 0);
+    //     Serial.println("No networks found...");
+    // } else {
+    //     for (int i = 0; i < networks; ++i) {
+    //         int c = WiFi.channel(i);
+    //         channels[c].occupants += 1;
+    //         channels[c].total_strength += WiFi.RSSI(i);
+    //     }
+    //     for (int i = 0; i < sizeof(channels)/sizeof(channel_t); i++) {
+    //         tft.fillRect(0, i*8, 8, 200, TFT_BLACK); // Smazeme aktualni radek zejo
+    //         // Channel name
+    //         // snprintf(s, 12, "Channel %d", i+1);
+    //         // tft.drawString(s, 0, i*8);
+    //         tft.drawString(frequencies[i], 0, i*8);
+    //         // Channel occupants
+    //         snprintf(s, 12, "%d", channels[i].occupants);
+    //         tft.drawString((const char*)s, 95, i*8);
+    //         // Channel signal
+    //         if (channels[i].occupants == 0) snprintf(s, 12, "%d", 0);
+    //         else snprintf(s, 12, "%d", (channels[i].total_strength)/(channels[i].occupants));
+    //         tft.drawString(s, 115, i*8);
+    //     }
+    // }
+    // Serial.println("Waiting...");
+    // delay(SCANNING_DELAY);
+    // reset_channels();
 }
 
-// void draw_channel(uint8_t number, uint8_t clients, uint8_t strength) {
-//     char c[2] = "";
-//     sprintf(c, "%d", number);
-//     tft.drawCircle(15, 45+(number-1)*12, 30, TFT_GREEN);
-//     tft.fillRect(0, 0, 14, 240, TFT_BLACK);
-//     tft.drawString(c, 8, 45+(number-1)*12);
-// }
+void draw_channel(uint8_t number, uint8_t clients, uint8_t strength) {
+    char c[2] = "";
+    sprintf(c, "%d", number);
+    tft.drawCircle(15, 45+(number-1)*12, 30, TFT_GREEN);
+    tft.fillRect(0, 0, 14, 240, TFT_BLACK);
+    tft.drawString(c, 8, 45+(number-1)*12);
+}
 
 void reset_channels() {
     for (int i = 0; i < sizeof(channels)/sizeof(channel_t); i++) {
