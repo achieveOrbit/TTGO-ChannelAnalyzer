@@ -61,7 +61,7 @@ void setup() {
     draw_channel(1, 3, 20);
     draw_channel(3, 6, 2);
     draw_channel(7, 3, 3);
-    draw_channel(14, 2, 1);
+    draw_channel(13, 2, 1);
     tft.drawLine(15, 0, 15, 240, TFT_WHITE);
 }
 
@@ -104,11 +104,14 @@ void loop() {
 }
 
 void draw_channel(uint8_t number, uint8_t clients, uint8_t strength) {
+    int radius = 33;
+    int spacing = 15;
+    int y_center = 30+(number-1)*spacing;
     char c[2] = "";
     sprintf(c, "%d", number);
-    tft.drawCircle(15, 45+(number-1)*12, 30, TFT_GREEN);
-    tft.fillRect(0, 0, 14, 240, TFT_BLACK);
-    tft.drawString(c, 8, 45+(number-1)*12);
+    tft.drawCircle(15, y_center, radius, TFT_GREEN);
+    tft.fillRect(0, y_center-radius, 14, radius*2, TFT_BLACK);
+    tft.drawString(c, 2, y_center-4);
 }
 
 void reset_channels() {
