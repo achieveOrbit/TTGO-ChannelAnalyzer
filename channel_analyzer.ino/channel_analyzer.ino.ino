@@ -14,7 +14,7 @@
 // DEBUG DEFINITIONS
 
 // #define NSERIAL
-// #define OUTPUT_WIFI
+#define OUTPUT_WIFI
 
 #ifdef NSERIAL
 #define serialln(s)
@@ -85,13 +85,13 @@ void loop() {
     } else {
         char s[25] = "";
         // Heading
-        sprintf(s, "Found %d networks", networks);
-        tft.drawString(s, 25, 0);
+        sprintf(s, "%d Networks", networks);
+        tft.drawString(s, 60, 0);
         serialln(s);
 
         // Column headings
-        tft.drawString("C", 80, 20);  // Clients
-        tft.drawString("S", 108, 20); // Average signal strength
+        tft.drawString("N", 80, 13);  // Network count
+        tft.drawString("S", 108, 13); // Average signal strength
 
         // Creating a representation of all the networks
         for (int i = 0; i < networks; ++i) {
@@ -108,8 +108,8 @@ void loop() {
             #endif
 
             if (c < CHANNEL_COUNT) {
-                channels[c].occupants += 1;
-                channels[c].total_strength += WiFi.RSSI(i);
+                channels[c-1].occupants += 1;
+                channels[c-1].total_strength += WiFi.RSSI(i);
             }
         }
 
